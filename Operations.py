@@ -30,10 +30,7 @@ def create(key,value,timeout=0):
 #Read operation: key is sufficient
 def read(key):
     sys.stdout=open(filename,'w')
-    if key not in dic:
-        print('Key not present in dictionary')#error message
-        sys.stdout.close()
-    else:
+    if key in dic:
         a=dic[key]
         if a[1]!=0:
             if time.time()<a[1]: #Checking time to live condition
@@ -45,14 +42,14 @@ def read(key):
         else:
             print(str(key)+":"+str(a[0]))
             sys.stdout.close()
+    else:
+        print('Key not present in dictionary')#error message
+        sys.stdout.close()
         
 #Deleting a key if present
 def delete(key):
     sys.stdout=open(filename,'w')
-    if key not in dic:
-        print('Key is not available to delete')#error message
-        sys.stdout.close()
-    else:
+    if key in dic:
         a=dic[key]
         if a[1]!=0:
             if time.time()<a[1]:
@@ -66,6 +63,9 @@ def delete(key):
             del dic[key]
             print('Key successfully deleted')
             sys.stdout.close()
+    else:
+        print('Key is not available to delete')#error message
+        sys.stdout.close()
 
 #Modifying a value of a key if needed to be changed
 def modify(key,value):
@@ -73,28 +73,28 @@ def modify(key,value):
     a=dic[key]
     if a[1]!=0:
         if time.time()<a[1]:
-            if key not in dic:
-                print('Key not available to modify')#error message
-                sys.stdout.close()
-            else:
+            if key in dic:
                 l=[]
                 l.append(value)
                 l.append(a[1])
                 dic[key]=l
+            else:
+                print('Key not available to modify')#error message
+                sys.stdout.close()
         else:
             print('Error')
             sys.stdout.close()
     else:
-        if key not in dic:
-            print('Key not available to modify')#error message
-            sys.stdout.close()
-        else:
+        if key in dic:
             l=[]
             l.append(value)
             l.append(a[1])
             dic[key]=l
-            
+        else:
+            print('Key not available to modify')#error message
+            sys.stdout.close()
         
+
 
 
 
